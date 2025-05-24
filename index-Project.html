@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Love Confession</title>
+    <style>
+        body {
+            /* Mengatur jenis font dengan style pixel art */
+            font-family: 'Press Start 2P', 'VT323', 'Consolas', monospace;
+            
+            /* Mengatur background dengan gambar Stardew Valley dan warna pink muda sebagai fallback */
+            background: url('bg_stardew_confess.png') center center / cover no-repeat, #ffe6f2;
+            
+            /* Menghilangkan margin default */
+            margin: 0;
+            
+            /* Memberi padding atas bawah 20px */
+            padding: 20px 0;
+            
+            /* Mengatur layout flexbox untuk centering konten */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            /* Mengatur tinggi minimal sesuai tinggi viewport */
+            min-height: 100vh;
+            
+            /* Mengatur overflow untuk scrolling */
+            overflow-x: hidden;
+            overflow-y: auto;
+            
+            /* Mengatur posisi relative untuk child elements */
+            position: relative;
+            
+            /* Membuat gambar terlihat pixelated sesuai tema */
+            image-rendering: pixelated;
+        }
+
+        .heart {
+            /* Mengatur posisi absolute agar bisa bebas ditempatkan */
+            position: absolute;
+            
+            /* Mengatur ukuran hati */
+            width: 32px;
+            height: 32px;
+            
+            /* Menggunakan gambar hati dari Stardew Valley */
+            background: url('https://stardewvalleywiki.com/mediawiki/images/6/63/DialogueBubbleLove.png') center/contain no-repeat;
+            
+            /* Membuat gambar terlihat pixelated */
+            image-rendering: pixelated;
+            
+            /* Menempatkan di atas elemen lain */
+            z-index: 1000;
+            
+            /* Menghilangkan border */
+            border: none;
+            
+            /* Mengatur transparansi */
+            opacity: 1;
+            
+            /* Menerapkan animasi float */
+            animation: float 15s ease-in infinite;
+        }
+        /* Menghapus pseudo-elements untuk menjaga tampilan pixel art */
+        .heart::before,
+        .heart::after {
+            display: none !important;
+        }
+
+        @keyframes float {
+            /* Kondisi awal animasi */
+            0% {
+                transform: translateY(0px) scale(1);
+                opacity: 0;
+            }
+            
+            /* Kondisi tengah animasi - hati terlihat jelas */
+            50% {
+                opacity: 0.8;
+            }
+            
+            /* Kondisi akhir animasi - hati menghilang ke atas */
+            100% {
+                transform: translateY(-600px) scale(1.1);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            background-color: rgba(255,251,231,0.75); /* Lowered opacity for more visible bg */
+            border-radius: 0;
+            box-shadow: 0 0 0 8px #ffb6d5, 0 10px 30px rgba(255, 105, 180, 0.3);
+            padding: 40px;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            z-index: 1;
+            position: relative;
+            transition: transform 0.3s ease;
+            border: 4px solid #ff6b8b;
+            font-family: 'Press Start 2P', 'VT323', 'Consolas', monospace;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        h1, h2, p, .btn, .btn-no {
+            font-family: 'Press Start 2P', 'VT323', 'Consolas', monospace;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            color: #ff3c6e;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            text-shadow: 2px 2px 0 #fff0f7, 0 0 2px #ffb6d5;
+        }
+
+        h2 {
+            color: #ff6b8b;
+            font-size: 1rem;
+            margin: 1em 0 0.5em 0;
+            text-shadow: 1px 1px 0 #fff0f7;
+        }
+
+        p {
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 18px;
+            font-size: 0.9rem;
+            text-shadow: 1px 1px 0 #fff0f7;
+        }
+
+        .highlight {
+            color: #ff3c6e;
+            font-weight: bold;
+            background: #fff0f7;
+            padding: 1px 3px;
+            border-radius: 2px;
+        }
+
+        .btn, .btn-no {
+            background-color: #ff6b8b;
+            color: white;
+            border: 2px solid #ff3c6e;
+            padding: 10px 22px;
+            font-size: 0.9rem;
+            border-radius: 0;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin: 10px;
+            outline: none;
+            font-family: 'Press Start 2P', 'VT323', 'Consolas', monospace;
+            box-shadow: 2px 2px 0 #ffb6d5;
+            text-shadow: 1px 1px 0 #ffb6d5;
+        }
+
+        .btn:hover {
+            background-color: #ff3c6e;
+            transform: scale(1.08);
+        }
+
+        .btn-no {
+            background-color: #fffbe7;
+            color: #ff3c6e;
+            border: 2px solid #ffb6d5;
+        }
+
+        .btn-no:hover {
+            background-color: #ffe6f2;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .response {
+            margin-top: 20px;
+            font-size: 1.3rem;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .visible {
+            opacity: 1;
+        }
+
+        .image-container {
+            margin: 20px 0;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-width: 300px;
+            margin: 20px auto;
+        }
+
+        .image-container img {
+            width: 100%;
+            display: block;
+        }
+        
+        #photos {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .memory {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .memory img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        #message-box {
+            transition: all 0.5s ease;
+        }
+
+        /* Fix for image placeholders */
+        .placeholder-img {
+            background-color: #ffe6f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff3c6e;
+            font-weight: bold;
+            font-family: 'Press Start 2P', 'VT323', 'Consolas', monospace;
+            border: 2px dashed #ffb6d5;
+            image-rendering: pixelated;
+        }
+
+        .photo-grid {
+            gap: 10px;
+        }
+
+        .memory img, .placeholder-img {
+            image-rendering: pixelated;
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px 5px;
+                max-width: 98vw;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .image-container, .photo-grid {
+                max-width: 100vw;
+            }
+            .memory img {
+                height: 90px;
+            }
+        }
+        @media (max-width: 400px) {
+            .container {
+                padding: 8px 2px;
+            }
+            .btn, .btn-no {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+            }
+        }
+
+        /* Agar tombol no tidak keluar container di layar kecil */
+        @media (max-width: 700px) {
+            #no-btn, #yes-btn {
+                position: static !important;
+                left: unset !important;
+                top: unset !important;
+                margin: 6px 2px;
+                width: 90px;
+                min-width: 70px;
+                max-width: 100px;
+            }
+        }
+
+        /* Stardew Valley flowers background */
+        #flowers-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .flower-pixel {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            image-rendering: pixelated;
+            opacity: 0.85;
+            filter: drop-shadow(0 2px 6px #ffb6d5);
+        }
+    </style>
+</head>
+<body>
+    <div id="hearts-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;"></div>
+    
+    <div class="container" style="margin: 40px 0;">
+>
+        <div id="message-box">
+            <h1>Dear <span id="crush-name">Crush</span></h1>
+            
+            <div class="image-container">
+                <!-- Foto utama bersama -->
+                <img src="images/main-photo.jpg" alt="Our Photo Together">
+            </div>
+            
+            <p>Aku sudah menunggu-nunggu saat ini tiba sebenarnya dari lama. Semenjak bby memberikan challenge, aku selalu kepikiran bagaimana cara mengeksekusinya dan kapan tanggalnya. Dan akhirnya datang juga harinya.</p>
+            
+            <p>Sejak pertama kali kita <span id="first-meeting">Ngobrol</span> di DM dan WhatsApp, aku langsung merasakan sesuatu yang berbeda. <span id="quality-1" class="highlight">Personality</span> bby yang begitu hangat dan <span id="quality-2" class="highlight">Apresiasi </span> bby terhadap hal-hal kecil brighten my day every time we talk.</p>
+            
+            <p><span id="special-memory">Terlebih lagi setelah kita pergi ke Tusen.</span> Semuanya menjadi lebih jelas dan aku semakin yakin You are the one I've been searching for.</p>
+            
+            <p>Terima Kasih bby sudah membuat aku merasakah apa itu "dicintai" dan "nyaman". Menjalani hubungan tanpa adanya rasa risau dan gelisah setiap harinya. Thank Amelia for loving me every day✨🫶🏻.
+                Aku berharap bby memiliki perasaan yang sama seperti apa yang aku rasakan, dan akan selalu seperti itu.</p>
+            
+            <p>The more time I spend with you, the more I realize how much I enjoy being around you. You make ordinary moments feel special, just by being yourself. I want to be the one who's there for you, every day. <span id="question">Can I be someone special in your life?</span></p>
+            
+            <button id="yes-btn" class="btn">Yes ❤️</button>
+            <button id="no-btn" class="btn btn-no">No💔</button>
+            
+            <div id="response-yes" class="response">
+                <p>You've made me the happiest person! 🥰</p>
+                <p>I can't wait to see where this journey takes us.</p>
+            </div>
+            
+            <div id="photos">
+                <h2>Our Memories Together</h2>
+                <div class="photo-grid">
+                    <div class="memory">
+                        <img src="images/memory1.jpg" alt="Memory 1">
+                    </div>
+                    <div class="memory">
+                        <img src="images/memory2.jpg" alt="Memory 2">
+                    </div>
+                    <div class="memory">
+                        <img src="images/memory3.jpg" alt="Memory 3">
+                    </div>
+                    <div class="memory">
+                        <img src="images/memory4.jpg" alt="Memory 4">
+                    </div>
+                </div>
+                
+                <div style="margin-top: 40px;">
+                    <h2>Our Story</h2>
+                    <p>Berawal dari reply story bulan, mulai mengenal satu sama lain dan intense di DM instagram, pindah ke WhatsApp, bertemu untuk pertama kalinya dan jatuh cinta pada saat itu juga. Lucu banget ya cerita kita, dari temen SMA yang kebetulan ketemu beberapa kali karena kelasnya sebelahan dan bby suka main ke kelasku, jadi couple hahahahaha (aduh masih malu). Aku masih kagum sama personal bby yang ternyata se-wow itu. Ceria setiap saat, energik, lucu, jail, pemberani. Teruslah menjadi seperti itu yaa sayangg. No matter how hard your life is, i'll be there for you <3</p>
+                    <p>Bersyukur banget aku Waktu itu memberanikan diri buat ketemu papa, bersyukur banget aku bby mau ikut buka bersama keluargaku. Karena dari kedua momen itu, terjadilah momen momen tidak terduga lainnya yang tidak pernah terbayangkan akan terjadi sebelumnya dikepalaku. Those are the moments I treasure most.✨🫶🏻</p>
+                    <p>I want to be there for you through thick and thin. To support your dreams and to be your biggest cheerleader. I want to make you smile even on your hardest days.</p>
+                    <p>I hope this is the start of something beautiful between us.</p>
+                    <p>With all my heart,</p>
+                    <p style="font-size: 1.5rem; color: #ff6b8b; font-weight: bold;">❤️ [Your Name] ❤️</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts - Fixed function
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts-container');
+            const screenWidth = window.innerWidth;
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                
+                // Random position, size and animation duration
+                const size = Math.random() * 20 + 10;
+                const left = Math.random() * screenWidth;
+                const animationDuration = Math.random() * 10 + 5;
+                const delay = Math.random() * 10;
+                
+                heart.style.left = `${left}px`;
+                heart.style.bottom = '-50px';
+                heart.style.width = `${size}px`;
+                heart.style.height = `${size}px`;
+                heart.style.animationDuration = `${animationDuration}s`;
+                heart.style.animationDelay = `${delay}s`;
+                
+                // Removed the problematic querySelector part
+                
+                heartsContainer.appendChild(heart);
+            }
+        }
+        
+        // No button avoidance - Fixed
+        document.getElementById('no-btn').addEventListener('mouseover', function() {
+            const button = this;
+            const container = document.querySelector('.container');
+            const containerRect = container.getBoundingClientRect();
+            
+            const maxX = containerRect.width - 100;
+            const maxY = containerRect.height - 50;
+            
+            // Ensure buttons stay within container bounds
+            const newX = Math.max(0, Math.min(maxX, Math.random() * maxX));
+            const newY = Math.max(0, Math.min(maxY, Math.random() * maxY));
+            
+            button.style.position = 'absolute';
+            button.style.left = `${newX}px`;
+            button.style.top = `${newY}px`;
+        });
+        
+        // Yes button action
+        document.getElementById('yes-btn').addEventListener('click', function() {
+            document.getElementById('response-yes').classList.add('visible');
+            document.getElementById('photos').style.display = 'block';
+            document.getElementById('question').style.display = 'none';
+            document.getElementById('yes-btn').style.display = 'none';
+            document.getElementById('no-btn').style.display = 'none';
+
+            // Create more hearts when saying yes
+            for (let i = 0; i < 10; i++) {
+                setTimeout(createHearts, i * 300);
+            }
+
+            // Show Stardew Valley popup background
+            document.getElementById('stardew-bg-popup').style.display = 'block';
+            // Optional: close popup on click
+            document.getElementById('stardew-bg-popup').onclick = function() {
+                this.style.display = 'none';
+            };
+        });
+        
+        // Initialize floating hearts - Call immediately
+        createHearts();
+        
+        // Function to customize the page
+        function customizePage() {
+            // You can edit these values to personalize your confession
+            const crushName = "Amelia Pawestri";
+            const firstMeeting = "Ngobrol";
+            const quality1 = "Personality";
+            const quality2 = "Apresiasi";
+            const specialMemory = "Terlebih lagi setelah kita pergi ke Tusen.";
+            const yourName = "Andrapati"; // Add your name here
+            
+            // Update the page with custom values
+            document.getElementById('crush-name').textContent = crushName;
+            document.getElementById('first-meeting').textContent = firstMeeting;
+            document.getElementById('quality-1').textContent = quality1;
+            document.getElementById('quality-2').textContent = quality2;
+            document.getElementById('special-memory').textContent = specialMemory;
+            
+            // Replace [Your Name] with actual name
+            const yourNameElements = document.querySelectorAll('p');
+            yourNameElements.forEach(p => {
+                if (p.textContent.includes('[Your Name]')) {
+                    p.textContent = p.textContent.replace('[Your Name]', yourName);
+                }
+            });
+        }
+        
+        // Run customization immediately
+        customizePage();
+
+        // Heart trail effect that follows the mouse
+        let lastHeartTime = 0;
+        document.addEventListener('mousemove', function(e) {
+            const now = Date.now();
+            if (now - lastHeartTime > 40) { // 40ms frequency
+                lastHeartTime = now;
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.style.left = (e.clientX - 10) + 'px';
+                heart.style.top = (e.clientY - 10) + 'px';
+                heart.style.width = heart.style.height = (Math.random() * 10 + 10) + 'px';
+                heart.style.opacity = 0.7 + Math.random() * 0.3;
+                heart.style.position = 'fixed';
+                heart.style.pointerEvents = 'none';
+                heart.style.animation = 'trail-fade 1s linear forwards';
+
+                // Hapus efek warna merah dan transform, hanya gambar pixel heart Stardew Valley
+                heart.style.backgroundColor = '';
+                heart.style.transform = '';
+                heart.innerHTML = '';
+                document.body.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 1000);
+            }
+        });
+
+        // Keyframes for heart trail fade
+        const styleSheet = document.createElement("style");
+        styleSheet.type = "text/css";
+        styleSheet.innerText = `
+        @keyframes trail-fade {
+            0% { opacity: 1; transform: scale(1) rotate(45deg);}
+            100% { opacity: 0; transform: scale(2) rotate(45deg);}
+        }`;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
